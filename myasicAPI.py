@@ -11,7 +11,7 @@ try:
     else:
         print('package: pip3 not found .. try to install')
         try:
-            mod_inst = subprocess.Popen("sudo apt install python3-pip", shell=True, stdout=subprocess.DEVNULL)
+            mod_inst = subprocess.Popen("sudo apt-get install python3-pip", shell=True, stdout=subprocess.DEVNULL)
             mod_inst.wait()
             if mod_inst.returncode == 0:
                 print('package: installed')
