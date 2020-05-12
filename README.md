@@ -20,6 +20,9 @@
 Скачайте программу на свой компьютер используя ссылку https://github.com/MiningManufacture/MyAsic/archive/master.zip
 распакуйте архив у удобную вам папку
 
+Если у вас Linux в терминале перейдите в папку куда будет распакована программа ( например  'cd \home\' ) затем 
+введите 'git clone https://github.com/MiningManufacture/MyAsic.git'
+
 Отредактируйте файл config.py в любом текстовом редакторе как в примере:
 
       #user settings####################################################
@@ -67,6 +70,6 @@
      где MyAsic-master папка с распакованным архивом
      
      Linux - откройте терминал, перейдите в папку с программой ( например 'cd \home\MyAsic-master' ), введите 
-     команду 'sudo python3 myasic.py' для Ubuntu и 'python3 myasic.py' для других версий ОС
+     команду 'sudo python3 myasic.py' 
 
 Разработка @Niko_Irk 2020
