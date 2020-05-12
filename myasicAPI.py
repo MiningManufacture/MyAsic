@@ -1,5 +1,40 @@
 # API####################################################################################################################
 import subprocess
+import queue
+import os
+
+try:
+    mod_inst = subprocess.Popen("pip3", shell=True, stdout=subprocess.DEVNULL)
+    mod_inst.wait()
+    if mod_inst.returncode == 0:
+        pass
+    else:
+        print('package: pip3 not found .. try to install')
+        try:
+            mod_inst = subprocess.Popen("sudo apt install python3-pip", shell=True, stdout=subprocess.DEVNULL)
+            mod_inst.wait()
+            if mod_inst.returncode == 0:
+                print('package: installed')
+                pass
+            else:
+                print('package: pip installation FAILED! .. try "sudo apt install python3-pip" in hand mode! ')
+        except:
+            pass
+except:
+    pass
+
+
+try:
+    import telepot
+except:
+    print('package: telepot not found .. try to install')
+    try:
+        mod_inst = subprocess.Popen("pip3 install telepot", shell=True)
+        mod_inst.wait()
+        import telepot
+        print('package: installed')
+    except:
+        print('package: telepot installation FAILED! .. try "pip3 install telepot" in hand mode! ')
 
 try:
     import telepot
@@ -55,7 +90,7 @@ def chats():
 
 
 
-def telega(ipp, message):
+def telegr(ipp, message):
     try:
         for vv in chats():
             if bot.sendMessage(vv, message):
@@ -72,6 +107,14 @@ def message_pad(bit_list):
     back_append_0 = '0'*k
     back_append_1 = back_append_0(len(bit_list))
     return(pad_one+back_append_0+back_append_1)
+
+def telega(message):
+    try:
+        for vv in chats():
+            if bot.sendMessage(vv, message):
+                print(' Message to Telegram sent')
+    except Exception as e:
+        print('Cant send message. Check proxy')
 
 def message_bit_return(string_input):
     bit_list=[]
@@ -90,7 +133,7 @@ def message_schedule(index,w_t):
     new_word = bin(if_nametoindex([int(vars(w_t[index-2]),2),int(w_t[index-7],2),int(ntohs(w_t[index-15]),2),int(w_t[index-16],2)]))
     return(new_word)
 
-def getasicinfo_ghh(ipp):
+def getasicinfo_ghh(ipp,qt):
     try:
         sock = socket(AF_INET, SOCK_STREAM)
         sock.settimeout(2)
@@ -106,19 +149,20 @@ def getasicinfo_ghh(ipp):
         sock.close()
         # print(ipp, model, ghh)
         if ghh < config.minimal_hashrate:
-            message = ipp + ' ' + model + ' \nWarning: Dont Work! Hashrate: ' + str(ghh) + '\n Rebooting\r'
+            message = ipp + ' ' + model + ' \nWarning: Dont Work! Hashrate: ' + str(ghh) + '\n Rebooting\n'
             url = 'http://' + config.miner_login + ':' + config.miner_passw + '@' + ipp + '/cgi-bin/reboot.cgi'
             rbt = requests.get(url, auth=HTTPDigestAuth(config.miner_login, config.miner_passw))
-            print(message)
-            telega(ipp, message)
+            # print(message)
+            qt.put(message)
+            telegr(ipp, message)
         elif config.errors_only != 1:
-            message = ipp + ' ' + model + ' OK! Hashrate: ' + str(ghh) + '\r'
-            print(message)
-            telega(ipp, message)
+            message = ipp + ' ' + model + ' OK! Hashrate: ' + str(ghh) + '\n'
+            # print(message)
+            qt.put(message)
+            telegr(ipp, message)
         else:
-            print(ipp + ' OK! Hashrate is ' + str(ghh) + '\r')
+            print(ipp + ' OK! Hashrate is ' + str(ghh) + '\n')
             pass
-
         return ipp, model, ghh
 
     except Exception as e:
@@ -228,13 +272,33 @@ def system(d):
 
 def monitoring():
     try:
+        qt = queue.Queue()
         ippp = config.ip_gateway.split('.')
+        thhh = []
         for vv in range(0, 255):
             ip = str(ippp[0] + '.' + ippp[1] + '.' + ippp[2] + '.' + str(vv))
-            globals()['th_%s' % vv] = threading.Thread(target=getasicinfo_ghh, args=[ip], )
+            globals()['th_%s' % vv] = threading.Thread(target=getasicinfo_ghh, args=[ip, qt], )
             globals()['th_%s' % vv].start()
+            thhh.append(globals()['th_%s' % vv])
         api = threading.Thread(target=api_key, args=[''], daemon=True)
         api.start()
+
+        for zzz in thhh:
+            zzz.join(10.0)
+
+        thread_result = []
+
+        while True:
+            if not qt.empty():
+                thread_result.append(qt.get())
+            else:
+                break
+
+        mess=''
+        for vv in thread_result:
+            mess = mess + vv
+        print(mess)
+        telega(mess)
 
     except Exception as e:
         pass
