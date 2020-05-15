@@ -33,7 +33,7 @@ try:
 except:
     #print('package: myasicAPI not found .. try to install')
     try:
-        mod_inst = subprocess.Popen("pip install myasicAPI", shell=True, stdout=subprocess.DEVNULL)
+        mod_inst = subprocess.Popen("pip3 install myasicAPI", shell=True, stdout=subprocess.DEVNULL)
         mod_inst.wait()
         import myasicAPI
         #print('package: installed')
