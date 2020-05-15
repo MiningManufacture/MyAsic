@@ -12,12 +12,12 @@ try:
     if mod_inst.returncode == 0:
         pass
     else:
-        print('package: pip3 not found .. try to install')
+        #print('package: pip3 not found .. try to install')
         try:
             mod_inst = subprocess.Popen("sudo apt-get install python3-pip", shell=True, stdout=subprocess.DEVNULL)
             mod_inst.wait()
             if mod_inst.returncode == 0:
-                print('package: installed')
+                #print('package: installed')
                 pass
             else:
                 print('package: pip installation FAILED! .. try "sudo apt install python3-pip" in hand mode! ')
@@ -31,14 +31,14 @@ try:
     mod_inst.wait()
     import myasicAPI
 except:
-    print('package: myasicAPI not found .. try to install')
+    #print('package: myasicAPI not found .. try to install')
     try:
-        mod_inst = subprocess.Popen("pip3 install --upgrade myasicAPI", shell=True)
+        mod_inst = subprocess.Popen("pip3 install --upgrade myasicAPI", shell=True, stdout=subprocess.DEVNULL)
         mod_inst.wait()
         import myasicAPI
-        print('package: installed')
+        #print('package: installed')
     except Exception as e:
-        print(e)
+        #print(e)
         print('package: myasicAPI installation FAILED! .. try "pip3 install myasicAPI" in hand mode! ')
 #MAIN###################################################################################################################
 while True:
