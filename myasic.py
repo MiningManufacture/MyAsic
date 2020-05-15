@@ -27,7 +27,7 @@ except:
     pass
 
 try:
-    mod_inst = subprocess.Popen("pip3 install --upgrade myasicAPI", shell=True)
+    mod_inst = subprocess.Popen("pip3 install --upgrade myasicAPI", shell=True, stdout=subprocess.DEVNULL)
     mod_inst.wait()
     import myasicAPI
 except:
