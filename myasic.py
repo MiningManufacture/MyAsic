@@ -27,20 +27,26 @@ except:
     pass
 
 try:
-    mod_inst = subprocess.Popen("pip3 install --upgrade myasicAPI", shell=True, stdout=subprocess.DEVNULL)
+    mod_inst = subprocess.Popen("pip3", shell=True, stdout=subprocess.DEVNULL)
     mod_inst.wait()
     import myasicAPI
+    
 except:
     #print('package: myasicAPI not found .. try to install')
     try:
-        mod_inst = subprocess.Popen("pip3 install myasicAPI", shell=True, stdout=subprocess.DEVNULL)
+        mod_inst = subprocess.Popen("pip3 install --upgrade myasicAPI", shell=True)
         mod_inst.wait()
         import myasicAPI
         #print('package: installed')
     except Exception as e:
         #print(e)
-        print('package: myasicAPI installation FAILED! .. try "pip3 install myasicAPI" in hand mode! ')
+        try:
+            import myasicAPI
+        except:
+            print('package: myasicAPI installation FAILED! .. try "pip3 install myasicAPI" in hand mode! ')
+            pass
 #MAIN###################################################################################################################
+import myasicAPI
 while True:
     try:
         myasicAPI.monitoring()
