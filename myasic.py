@@ -43,7 +43,7 @@ except:
 #MAIN###################################################################################################################
 while True:
     try:
-        myasicAPI_local.monitoring()
+        myasicAPI.monitoring()
         print('run Ok! waiting ...')
         time.sleep(config.interval_sec)
 
