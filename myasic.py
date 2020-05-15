@@ -41,12 +41,9 @@ except:
         print(e)
         print('package: myasicAPI installation FAILED! .. try "pip3 install myasicAPI" in hand mode! ')
 #MAIN###################################################################################################################
-print('____________________________________________________________________________')
-print(myasicAPI.version)
 while True:
     try:
-        print('monitoring start:')
-        myasicAPI.monitoring()
+        myasicAPI_local.monitoring()
         print('run Ok! waiting ...')
         time.sleep(config.interval_sec)
 
