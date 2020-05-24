@@ -51,6 +51,7 @@ try:
         try:
             installwin('pip')
             installwin('wheel')
+            import wheel
             installwin('myasicAPI')
             installwin('telepot')
             installwin('requests')
